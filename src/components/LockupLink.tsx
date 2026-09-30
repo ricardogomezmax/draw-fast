@@ -21,10 +21,6 @@ export function LockupLink() {
 				<Lockup />
 				{/* <img alt="tldraw logo" className="lockup" src="/lockup.svg" /> */}
 			</a>
-			<span className="lockup__collab">×</span>
-			<a href="https://twitter.com/fal_ai_data">
-				<FalLogo />
-			</a>
 		</span>
 	)
 }
