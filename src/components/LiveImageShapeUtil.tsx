@@ -49,10 +49,10 @@ type Output = {
 export type LiveImageShape = TLBaseShape<
 	'live-image',
 	{
-		w: number
-		h: number
-		name: string
-		overlayResult?: boolean
+			w: number
+			h: number
+			name: string
+			overlayResult: boolean
 	}
 >
 

@@ -111,13 +111,17 @@ export function LiveImageProvider({
 	)
 }
 
-export function useLiveImage(
-	shapeId: TLShapeId,
-	{ throttleTime = 64 }: { throttleTime?: number } = {}
-) {
+export function useLiveImage() {
+	const context = useContext(LiveImageContext)
+	if (!context) {
+		throw new Error('useLiveImage must be used within a LiveImageProvider')
+	}
+	return context
+}
+
+export function useLiveImageSync(shapeId: TLShapeId) {
 	const editor = useEditor()
-	const fetchImage = useContext(LiveImageContext)
-	if (!fetchImage) throw new Error('Missing LiveImageProvider')
+	const fetchImage = useLiveImage()
 
 	useEffect(() => {
 		let prevHash = ''
