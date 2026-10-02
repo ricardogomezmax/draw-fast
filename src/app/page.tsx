@@ -62,13 +62,42 @@ export default function Home() {
 	const [password, setPassword] = useState('')
 	const [error, setError] = useState('')
 
+	const [adminBannerText, setAdminBannerText] = useState('Modo Administrador Ativo - Edição de Canvas Habilitada')
+	const [siteTitle, setSiteTitle] = useState('tldraw • draw fast')
+	const [isEditorOpen, setIsEditorOpen] = useState(false)
+
+	useEffect(() => {
+		const savedTitle = localStorage.getItem('site_custom_title')
+		const savedBanner = localStorage.getItem('site_custom_banner')
+		const auth = localStorage.getItem('site_admin_auth')
+		if (savedTitle) setSiteTitle(savedTitle)
+		if (savedBanner) setAdminBannerText(savedBanner)
+		if (auth === 'true') setIsAuthenticated(true)
+	}, [])
+
+	const handleSaveSiteConfig = (e: React.FormEvent) => {
+		e.preventDefault()
+		localStorage.setItem('site_custom_title',
+			siteTitle
+		)
+		localStorage.setItem('site_custom_banner', adminBannerText)
+		document.title = siteTitle
+		setIsEditorOpen(false)
+	}
+
+	const handleLogout = () => {
+		localStorage.removeItem('site_admin_auth')
+		setIsAuthenticated(false)
+	}
+
 	const handleLogin = (e: React.FormEvent) => {
 		e.preventDefault()
-		if (username === 'admin' && password === 'admin123') {
+		if (username === 'admin' && (password === 'admin' || password === 'admin123')) {
 			setIsAuthenticated(true)
+			localStorage.setItem('site_admin_auth', 'true')
 			setError('')
 		} else {
-			setError('Usuário ou senha inválidos')
+			setError('Usuário ou senha inválidos (use admin / admin)')
 		}
 	}
 
@@ -77,6 +106,7 @@ export default function Home() {
 			<main className="flex min-h-screen items-center justify-center bg-gray-50 px-4">
 				<div className="w-full max-w-md rounded-xl bg-white p-8 shadow-lg">
 					<h1 className="mb-6 text-center text-2xl font-bold text-gray-900">Painel Admin</h1>
+					<p className="mb-4 text-center text-xs text-gray-500">Credenciais: <b>admin</b> / <b>admin</b></p>
 					<form onSubmit={handleLogin} className="space-y-4">
 						<div>
 							<label className="block text-sm font-medium text-gray-700">Usuário</label>
