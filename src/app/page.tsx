@@ -57,6 +57,60 @@ const shapeUtils = [LiveImageShapeUtil]
 const tools = [LiveImageTool]
 
 export default function Home() {
+	const [isAuthenticated, setIsAuthenticated] = useState(false)
+	const [username, setUsername] = useState('')
+	const [password, setPassword] = useState('')
+	const [error, setError] = useState('')
+
+	const handleLogin = (e: React.FormEvent) => {
+		e.preventDefault()
+		if (username === 'admin' && password === 'admin123') {
+			setIsAuthenticated(true)
+			setError('')
+		} else {
+			setError('Usuário ou senha inválidos')
+		}
+	}
+
+	if (!isAuthenticated) {
+		return (
+			<main className="flex min-h-screen items-center justify-center bg-gray-50 px-4">
+				<div className="w-full max-w-md rounded-xl bg-white p-8 shadow-lg">
+					<h1 className="mb-6 text-center text-2xl font-bold text-gray-900">Painel Admin</h1>
+					<form onSubmit={handleLogin} className="space-y-4">
+						<div>
+							<label className="block text-sm font-medium text-gray-700">Usuário</label>
+							<input
+								type="text"
+								value={username}
+								onChange={(e) => setUsername(e.target.value)}
+								className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-black focus:outline-none focus:ring-1 focus:ring-black"
+								required
+							/>
+						</div>
+						<div>
+							<label className="block text-sm font-medium text-gray-700">Senha</label>
+							<input
+								type="password"
+								value={password}
+								onChange={(e) => setPassword(e.target.value)}
+								className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-black focus:outline-none focus:ring-1 focus:ring-black"
+								required
+							/>
+						</div>
+						{error && <p className="text-sm text-red-600">{error}</p>}
+						<button
+							type="submit"
+							className="w-full rounded-md bg-black px-4 py-2 font-medium text-white hover:bg-gray-800 transition"
+						>
+							Entrar
+						</button>
+					</form>
+				</div>
+			</main>
+		)
+	}
+
 	const onEditorMount = (editor: Editor) => {
 		// We need the editor to think that the live image shape is a frame
 		// @ts-expect-error: patch
